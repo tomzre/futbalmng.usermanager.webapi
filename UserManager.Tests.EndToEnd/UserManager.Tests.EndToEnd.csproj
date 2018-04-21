@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../UserManager.Infrastructure/UserManager.Infrastructure.csproj" Version="1.0" />
     <ProjectReference Include="../UserManager.Core/UserManager.Core.csproj" Version="1.0" />
   </ItemGroup>
 

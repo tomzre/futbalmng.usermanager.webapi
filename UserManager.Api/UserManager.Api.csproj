@@ -8,6 +8,10 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+    <ItemGroup>
+    <ProjectReference Include="../UserManager.Infrastructure/UserManager.Infrastructure.csproj" Version="1.0" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
   </ItemGroup>
