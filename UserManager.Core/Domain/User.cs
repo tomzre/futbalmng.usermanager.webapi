@@ -23,24 +23,24 @@ namespace UserManager.Core.Domain
         {
         }
 
-        public User(string email, string username, 
-            string password, string salt)
+        public User(Guid userId, string email, string username, 
+            string password, string salt, string role)
         {
-            Id = Guid.NewGuid();
-            Email = email;
-            Username = username;
-            Password = password;
-            Salt = salt;
+            Id = userId;
+            SetUsername(username);
+            SetPassword(password, salt);
+            SetEmail(email);
+            SetRole(role);
             CreatedAt = DateTime.UtcNow;
         }
 
         public void SetUsername(string username){
             if(!NameRegex.IsMatch(username)){
-                throw new Exception("Invalid username");
+                throw new Exception("Invalid username.");
             }
 
             if(String.IsNullOrEmpty(username)){
-                throw new Exception("Invalid username");                
+                throw new Exception("Invalid username.");                
             }
 
             Username = username.ToLowerInvariant();
@@ -48,14 +48,11 @@ namespace UserManager.Core.Domain
         }
 
         public void SetEmail(string email){
-            if(!String.IsNullOrEmpty(email)){
-                throw new FormatException("Invalid email");
-            }
-
+           
             try{
                 MailAddress mail = new MailAddress(email);
             }catch(FormatException){
-                throw new FormatException("Invalid email");
+                throw new FormatException("Invalid email.");
             }
 
             if(Email == email){
