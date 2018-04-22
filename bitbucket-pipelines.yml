@@ -11,7 +11,7 @@ pipelines:
         caches:
           - dotnetcore
         script: # Modify the comma`nds below to build your repository.
-          - export PROJECT_NAME=UserManager
+          - export PROJECT_NAME=UserManager.sln
           - export TEST_NAME=UserManager.Tests
           - export TESTENDTOEND_NAME=UserManager.Tests.EndToEnd
           - dotnet restore
