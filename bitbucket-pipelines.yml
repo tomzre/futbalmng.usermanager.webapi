@@ -18,3 +18,8 @@ pipelines:
           - dotnet build $PROJECT_NAME
           - dotnet test $TEST_NAME
           - dotnet test $TESTENDTOEND_NAME
+  branches:
+    master:
+      - step:
+          script:
+            - echo "This script runs only on commit to the master branch."
