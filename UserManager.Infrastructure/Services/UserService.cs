@@ -1,6 +1,7 @@
 using System;
 using UserManager.Core.Domain;
 using UserManager.Core.Repositories;
+using UserManager.Infrastructure.DTO;
 
 namespace UserManager.Infrastructure.Services
 {
@@ -11,6 +12,21 @@ namespace UserManager.Infrastructure.Services
         {
             _userRepository = userRepository;
         }
+
+        public UserDto GetDto(string email)
+        {
+            var user = _userRepository.Get(email);
+
+            return new UserDto
+            {
+             Id = user.Id,
+             Username = user.Username,
+             Email = user.Email,
+             FullName = user.FullName,
+             Role = user.Role
+            };
+        }
+
         public void Register(string email, string username, string password)
         {
             var user = _userRepository.Get(email);

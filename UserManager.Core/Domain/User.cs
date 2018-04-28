@@ -11,10 +11,10 @@ namespace UserManager.Core.Domain
         public Guid Id { get; protected set; }
         public string Email { get; protected set; }
         public string Password { get; protected set; }
-        public string Salt { get; set; }
+        public string Salt { get; protected set; }
         public string Username { get; protected set; }
         public string FullName { get; protected set; } 
-        public Avatar Avatar { get; set; }
+        public Avatar Avatar { get; protected set; }
         public string Role { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdateAt { get; protected set; }
@@ -23,10 +23,10 @@ namespace UserManager.Core.Domain
         {
         }
 
-        public User(Guid userId, string email, string username, 
+        public User(string email, string username, 
             string password, string salt, string role)
         {
-            Id = userId;
+            Id = Guid.NewGuid();
             SetUsername(username);
             SetPassword(password, salt);
             SetEmail(email);
