@@ -4,7 +4,7 @@ namespace UserManager.Infrastructure.Services
 {
     public interface IUserService
     {
-        UserDto GetDto(string email);
+        UserDto Get(string email);
          void Register(string email, string username, string password);
     }
 }

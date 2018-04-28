@@ -6,9 +6,13 @@ using UserManager.Core.Repositories;
 
 namespace UserManager.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class InMemoryUserRepository : IUserRepository
     {
-        private static ISet<User> _users = new HashSet<User>();
+        private static ISet<User> _users = new HashSet<User>{
+            new User("user1@internet.com", "username1", "pass", "sol", "Admin"),
+            new User("user2@internet.com", "username2", "pass", "sol", "Admin"),
+            new User("user3@internet.com", "username3", "pass", "sol", "Admin")
+        };
         public void Add(User user)
         {
             _users.Add(user);

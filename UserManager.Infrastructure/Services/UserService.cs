@@ -13,7 +13,7 @@ namespace UserManager.Infrastructure.Services
             _userRepository = userRepository;
         }
 
-        public UserDto GetDto(string email)
+        public UserDto Get(string email)
         {
             var user = _userRepository.Get(email);
 

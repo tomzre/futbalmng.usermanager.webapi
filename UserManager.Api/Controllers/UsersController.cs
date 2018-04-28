@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using UserManager.Infrastructure.Services;
 
 namespace UserManager.Api.Controllers
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Route("[controller]")]
+    public class UsersController : Controller
     {
+        private readonly IUserService _usersService;
+        public UsersController(IUserService userService)
+        {
+            _usersService = userService;
+        }
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -17,10 +23,11 @@ namespace UserManager.Api.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{email}")]
+        public IActionResult Get(string email)
         {
-            return "value";
+            var user = _usersService.Get(email);
+            return Ok(user);
         }
 
         // POST api/values
