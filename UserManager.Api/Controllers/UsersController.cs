@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using UserManager.Infrastructure.DTO;
 using UserManager.Infrastructure.Services;
 
 namespace UserManager.Api.Controllers
@@ -26,8 +27,13 @@ namespace UserManager.Api.Controllers
         [HttpGet("{email}")]
         public IActionResult Get(string email)
         {
-            var user = _usersService.Get(email);
-            return Ok(user);
+            UserDto user = null;
+            try{
+                user = _usersService.Get(email);
+                return Ok(user);
+            }catch(Exception ex){
+                return NotFound(ex.Message);
+            }            
         }
 
         // POST api/values

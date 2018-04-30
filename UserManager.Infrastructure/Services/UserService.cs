@@ -17,6 +17,9 @@ namespace UserManager.Infrastructure.Services
         {
             var user = _userRepository.Get(email);
 
+                if(user == null)
+                    throw new Exception("User not found.");
+
             return new UserDto
             {
              Id = user.Id,
