@@ -17,6 +17,7 @@ namespace UserManager.Api.Controllers
         {
             _usersService = userService;
         }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -28,20 +29,27 @@ namespace UserManager.Api.Controllers
         [HttpGet("{email}")]
         public async Task<IActionResult> Get(string email)
         {
-            UserDto user = null;
-            try{
-                user = await _usersService.GetAsync(email);
-                return Ok(user);
-            }catch(Exception ex){
-                return NotFound(ex.Message);
-            }            
+               var user = await _usersService.GetAsync(email);
+               if(user != null)
+               {
+                    return Ok(user);
+               }
+               
+                return NotFound($"User with {email} not exists.");
         }
 
         // POST api/values
         [HttpPost]
-        public async Task Post([FromBody]CreateUser request)
+        public async Task<IActionResult> Post([FromBody]CreateUser request)
         {
-            await _usersService.RegisterAsync(request.Email, request.Username, request.Password);
+                var userFromDb = await _usersService.GetAsync(request.Email);
+                if(userFromDb != null)
+                {
+                    return BadRequest($"user with {request.Email} already exists.");
+                }
+             
+                await _usersService.RegisterAsync(request.Email, request.Username, request.Password);
+                return Created($"users/{request.Email}", new object());
         }
 
         // PUT api/values/5
@@ -49,7 +57,7 @@ namespace UserManager.Api.Controllers
         public void Put(int id, [FromBody]string value)
         {
         }
-
+        
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)

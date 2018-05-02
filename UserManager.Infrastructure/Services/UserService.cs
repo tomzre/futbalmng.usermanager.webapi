@@ -22,15 +22,13 @@ namespace UserManager.Infrastructure.Services
         {
             var user = await _userRepository.GetAsync(email);
 
-                if(user == null)
-                    throw new Exception("User not found.");
-
             return _mapper.Map<User, UserDto>(user);
         }
 
         public async Task RegisterAsync(string email, string username, string password)
         {
             var user = await _userRepository.GetAsync(email);
+            
             if(user != null)
             {
                 throw new Exception($"User with email: '{email}' already exists");

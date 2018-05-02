@@ -12,7 +12,8 @@ namespace UserManager.Infrastructure.Repositories
         private static ISet<User> _users = new HashSet<User>{
             new User("user1@internet.com", "username1", "pass", "sol", "Admin"),
             new User("user2@internet.com", "username2", "pass", "sol", "Admin"),
-            new User("user3@internet.com", "username3", "pass", "sol", "Admin")
+            new User("user3@internet.com", "username3", "pass", "sol", "Admin"),
+            new User("user1@email.com", "username", "pass", "sol", "Admin")
         };
         public async Task AddAsync(User user)
         {
