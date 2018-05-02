@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using UserManager.Infrastructure.Commands.Users;
 using UserManager.Infrastructure.DTO;
 using UserManager.Infrastructure.Services;
 
@@ -38,8 +39,9 @@ namespace UserManager.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]CreateUser request)
         {
+            _usersService.Register(request.Email, request.Username, request.Password);
         }
 
         // PUT api/values/5

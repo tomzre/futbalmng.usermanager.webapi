@@ -8,4 +8,8 @@
     <ProjectReference Include="../UserManager.Core/UserManager.Core.csproj" Version="1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+  </ItemGroup>
+
 </Project>
