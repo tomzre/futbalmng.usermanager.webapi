@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using UserManager.Core.Domain;
 using UserManager.Core.Repositories;
@@ -17,9 +18,9 @@ namespace UserManager.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public UserDto Get(string email)
+        public async Task<UserDto> GetAsync(string email)
         {
-            var user = _userRepository.Get(email);
+            var user = await _userRepository.GetAsync(email);
 
                 if(user == null)
                     throw new Exception("User not found.");
@@ -27,9 +28,9 @@ namespace UserManager.Infrastructure.Services
             return _mapper.Map<User, UserDto>(user);
         }
 
-        public void Register(string email, string username, string password)
+        public async Task RegisterAsync(string email, string username, string password)
         {
-            var user = _userRepository.Get(email);
+            var user = await _userRepository.GetAsync(email);
             if(user != null)
             {
                 throw new Exception($"User with email: '{email}' already exists");
@@ -39,7 +40,7 @@ namespace UserManager.Infrastructure.Services
 
             user = new User(email, username, password, salt, "User");
 
-            _userRepository.Add(user);
+            await _userRepository.AddAsync(user);
         }
     }
 }

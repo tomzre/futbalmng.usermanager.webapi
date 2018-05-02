@@ -26,11 +26,11 @@ namespace UserManager.Api.Controllers
 
         // GET api/values/5
         [HttpGet("{email}")]
-        public IActionResult Get(string email)
+        public async Task<IActionResult> Get(string email)
         {
             UserDto user = null;
             try{
-                user = _usersService.Get(email);
+                user = await _usersService.GetAsync(email);
                 return Ok(user);
             }catch(Exception ex){
                 return NotFound(ex.Message);
@@ -39,9 +39,9 @@ namespace UserManager.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]CreateUser request)
+        public async Task Post([FromBody]CreateUser request)
         {
-            _usersService.Register(request.Email, request.Username, request.Password);
+            await _usersService.RegisterAsync(request.Email, request.Username, request.Password);
         }
 
         // PUT api/values/5
