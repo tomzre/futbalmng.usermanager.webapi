@@ -36,10 +36,10 @@ namespace UserManager.Tests.UserTests
         }
         [Test]
         public void setting_wrong_email_should_throw_exception(){
-            // Act
+            // Arrange
             string wrongPassword = "dupadupa";
 
-            // Arrange
+            // Act
             Action act = () => User.SetEmail(wrongPassword);
 
             // Assert

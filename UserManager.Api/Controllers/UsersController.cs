@@ -18,13 +18,6 @@ namespace UserManager.Api.Controllers
             _usersService = userService;
         }
 
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET api/values/5
         [HttpGet("{email}")]
         public async Task<IActionResult> Get(string email)

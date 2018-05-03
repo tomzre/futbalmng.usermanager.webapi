@@ -94,6 +94,5 @@ namespace UserManager.Tests.EndToEnd.Controllers
 
             return JsonConvert.DeserializeObject<UserDto>(responseString);
         }
-
     }
 }
