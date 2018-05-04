@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UserManager.Core.Repositories;
+using UserManager.Infrastructure.IoC.Modules;
 using UserManager.Infrastructure.Mappers;
 using UserManager.Infrastructure.Repositories;
 using UserManager.Infrastructure.Services;
@@ -37,6 +38,7 @@ namespace UserManager.Api
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
+            builder.RegisterModule<CommandModule>();
 
             ApplicationContainer = builder.Build();
 
