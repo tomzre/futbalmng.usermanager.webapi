@@ -37,6 +37,7 @@ namespace UserManager.Infrastructure.Repositories
 
         public async Task UpdateAsync(User user)
         {
+            await Task.CompletedTask;
         }
     }
 }

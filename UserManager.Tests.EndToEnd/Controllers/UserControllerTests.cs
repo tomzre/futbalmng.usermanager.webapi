@@ -13,23 +13,13 @@ using System.Text;
 
 namespace UserManager.Tests.EndToEnd.Controllers
 {
-    public class UserControllerTests
+    public class UserControllerTests : ControllerTestsBase
     {
-        private readonly TestServer _server;
-        private readonly HttpClient _client;
-        
-        public UserControllerTests()
-        {
-             _server = new TestServer(new WebHostBuilder()
-            .UseStartup<Startup>());
-            _client = _server.CreateClient();
-        }
-        
         [Test]
         public async Task given_valid_email_user_should_exist()
         {
             var email = "user1@email.com";
-            var response = await _client.GetAsync($"users/{email}");
+            var response = await Client.GetAsync($"users/{email}");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -43,7 +33,7 @@ namespace UserManager.Tests.EndToEnd.Controllers
         public async Task given_invalid_email_user_should_throw_not_found_code()
         {
             var email = "user1000000@email.com";
-            var response = await _client.GetAsync($"users/{email}");
+            var response = await Client.GetAsync($"users/{email}");
             response.StatusCode.Should().BeEquivalentTo(HttpStatusCode.NotFound);
         }
         
@@ -58,7 +48,7 @@ namespace UserManager.Tests.EndToEnd.Controllers
             };
 
             var payload = GetPayload(command);
-            var response = await _client.PostAsync("users", payload);
+            var response = await Client.PostAsync("users", payload);
             response.Headers.Location.ToString().Should().BeEquivalentTo($"users/{command.Email}");
 
             var user = await GetUserAsync(command.Email);
@@ -76,20 +66,12 @@ namespace UserManager.Tests.EndToEnd.Controllers
             };
 
             var payload = GetPayload(command);
-            var response = await _client.PostAsync("users", payload);
+            var response = await Client.PostAsync("users", payload);
             response.StatusCode.Should().BeEquivalentTo(HttpStatusCode.BadRequest);
         }
-
-        protected static StringContent GetPayload(object data)
-        {
-            var json = JsonConvert.SerializeObject(data);
-
-            return new StringContent(json, Encoding.UTF8, "application/json");
-        }
-
         private async Task<UserDto> GetUserAsync(string email)
         {
-            var response = await _client.GetAsync($"users/{email}");
+            var response = await Client.GetAsync($"users/{email}");
             var responseString = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<UserDto>(responseString);
