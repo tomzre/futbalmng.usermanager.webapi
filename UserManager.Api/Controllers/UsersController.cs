@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using UserManager.Infrastructure.Commands;
 using UserManager.Infrastructure.Commands.Users;
 using UserManager.Infrastructure.DTO;
 using UserManager.Infrastructure.Services;
@@ -13,9 +14,12 @@ namespace UserManager.Api.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _usersService;
-        public UsersController(IUserService userService)
+        private readonly ICommandDispatcher _commandDispatcher;
+
+        public UsersController(IUserService userService, ICommandDispatcher commandDispatcher)
         {
             _usersService = userService;
+            _commandDispatcher = commandDispatcher;
         }
 
         // GET api/values/5
@@ -33,16 +37,18 @@ namespace UserManager.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CreateUser request)
+        public async Task<IActionResult> Post([FromBody]CreateUser command)
         {
-                var userFromDb = await _usersService.GetAsync(request.Email);
+            await _commandDispatcher.DispatchAsync(command);
+            
+                var userFromDb = await _usersService.GetAsync(command.Email);
                 if(userFromDb != null)
                 {
-                    return BadRequest($"user with {request.Email} already exists.");
+                    return BadRequest($"user with {command.Email} already exists.");
                 }
              
-                await _usersService.RegisterAsync(request.Email, request.Username, request.Password);
-                return Created($"users/{request.Email}", new object());
+                
+                return Created($"users/{command.Email}", new object());
         }
 
         // PUT api/values/5

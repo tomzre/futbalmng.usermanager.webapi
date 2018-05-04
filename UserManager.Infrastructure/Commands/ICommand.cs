@@ -1,4 +1,4 @@
-namespace UserManager.Infrastructure.Commands.Users
+namespace UserManager.Infrastructure.Commands
 {
     public interface ICommand
     {
