@@ -1,14 +1,16 @@
+using Microsoft.AspNetCore.Mvc;
 using UserManager.Infrastructure.Commands;
 
 namespace UserManager.Api.Controllers
 {
-    public abstract class ApiControllerBase
+    [Route("[controller]")]
+    public abstract class ApiControllerBase : Controller
     {
-        private readonly ICommandDispatcher _commandDispatcher;
+        protected readonly ICommandDispatcher CommandDispatcher;
 
-        public ApiControllerBase(ICommandDispatcher commandDispatcher)
+        protected ApiControllerBase(ICommandDispatcher commandDispatcher)
         {
-         _commandDispatcher = commandDispatcher;
+            CommandDispatcher = commandDispatcher;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UserManager.Infrastructure.Commands;
 using UserManager.Infrastructure.Commands.Users;
@@ -15,7 +16,12 @@ namespace UserManager.Infrastructure.Handlers.Users
         }
         public async Task HandleAsync(CreateUser command)
         {
-            await _usersService.RegisterAsync(command.Email, command.Username, command.Password);
+            try{
+                await _usersService.RegisterAsync(command.Email, command.Username, command.Password);
+            }catch(Exception ex){
+                throw ex;
+            }
+            
         }
     }
 }

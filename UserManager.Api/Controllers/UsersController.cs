@@ -10,16 +10,14 @@ using UserManager.Infrastructure.Services;
 
 namespace UserManager.Api.Controllers
 {
-    [Route("[controller]")]
-    public class UsersController : Controller
+    public class UsersController : ApiControllerBase
     {
         private readonly IUserService _usersService;
-        private readonly ICommandDispatcher _commandDispatcher;
-
-        public UsersController(IUserService userService, ICommandDispatcher commandDispatcher)
+        
+        public UsersController(IUserService userService,
+            ICommandDispatcher commandDispatcher): base(commandDispatcher)
         {
             _usersService = userService;
-            _commandDispatcher = commandDispatcher;
         }
 
         // GET api/values/5
@@ -39,16 +37,14 @@ namespace UserManager.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateUser command)
         {
-            await _commandDispatcher.DispatchAsync(command);
-            
-                var userFromDb = await _usersService.GetAsync(command.Email);
-                if(userFromDb != null)
-                {
-                    return BadRequest($"user with {command.Email} already exists.");
-                }
-             
+            try{
+                await CommandDispatcher.DispatchAsync(command);     
                 
                 return Created($"users/{command.Email}", new object());
+
+            }catch(Exception ex){
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT api/values/5
