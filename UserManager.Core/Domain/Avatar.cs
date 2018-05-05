@@ -12,11 +12,15 @@ namespace UserManager.Core.Domain
         {
         }
 
-        public Avatar(string link, string name)
+        public Avatar(string name, string link)
         {
+            Id = Guid.NewGuid();
             Name = name;
             Link = link;
         }
+
+        public static Avatar Create(string name, string link)
+            => new Avatar(name, link);
     }
 
     

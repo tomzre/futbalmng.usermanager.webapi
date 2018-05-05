@@ -12,7 +12,6 @@ namespace UserManager.Api.Controllers
         {
         }
 
-
         [HttpPut("{password}")]
         public async Task<IActionResult> Put([FromBody]ChangeUserPassword command)
         {

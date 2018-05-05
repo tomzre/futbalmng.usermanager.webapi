@@ -36,7 +36,7 @@ namespace UserManager.Tests.EndToEnd.Controllers
             var response = await Client.GetAsync($"users/{email}");
             response.StatusCode.Should().BeEquivalentTo(HttpStatusCode.NotFound);
         }
-        
+         
         [Test]
         public async Task given_unique_email_user_should_be_created()
         {
