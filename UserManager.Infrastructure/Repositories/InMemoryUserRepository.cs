@@ -7,7 +7,7 @@ using UserManager.Core.Repositories;
 
 namespace UserManager.Infrastructure.Repositories
 {
-    public class InMemoryUserRepository : IUserRepository
+    public class InMemoryUserRepository : IUserRepository, IRepository
     {
         private static ISet<User> _users = new HashSet<User>{
             new User("user1@internet.com", "username1", "pass", "sol", "Admin"),

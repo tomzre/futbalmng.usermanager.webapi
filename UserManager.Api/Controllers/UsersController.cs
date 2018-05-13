@@ -7,17 +7,22 @@ using UserManager.Infrastructure.Commands;
 using UserManager.Infrastructure.Commands.Users;
 using UserManager.Infrastructure.DTO;
 using UserManager.Infrastructure.Services;
+using UserManager.Infrastructure.Settings;
 
 namespace UserManager.Api.Controllers
 {
     public class UsersController : ApiControllerBase
     {
         private readonly IUserService _usersService;
-        
+        private readonly GeneralSettings _settings;
+
         public UsersController(IUserService userService,
-            ICommandDispatcher commandDispatcher): base(commandDispatcher)
+            ICommandDispatcher commandDispatcher,
+            GeneralSettings settings): base(commandDispatcher)
         {
             _usersService = userService;
+            _settings = settings;
+            Console.WriteLine("logger: " + _settings.Name);
         }
 
         // GET api/values/5

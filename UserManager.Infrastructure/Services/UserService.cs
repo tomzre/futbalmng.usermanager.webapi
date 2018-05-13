@@ -7,7 +7,7 @@ using UserManager.Infrastructure.DTO;
 
 namespace UserManager.Infrastructure.Services
 {
-    public class UserService : IUserService
+    public class UserService : IUserService, IService
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
