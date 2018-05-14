@@ -15,8 +15,9 @@ namespace UserManager.Tests.Services
         {
             var userRepositoryMock = new Mock<IUserRepository>();
             var mapperMock = new Mock<IMapper>();
+            var encrypterMock = new Mock<IEncrypter>();
 
-            var userService = new UserService(userRepositoryMock.Object, mapperMock.Object);
+            var userService = new UserService(userRepositoryMock.Object, mapperMock.Object, encrypterMock.Object);
 
             await userService.RegisterAsync("user@email.com", "user", "password");
 
