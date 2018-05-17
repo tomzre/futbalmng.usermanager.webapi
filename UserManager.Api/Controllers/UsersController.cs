@@ -11,6 +11,7 @@ using UserManager.Infrastructure.Settings;
 
 namespace UserManager.Api.Controllers
 {
+    [Route("[controller]")]
     public class UsersController : ApiControllerBase
     {
         private readonly IUserService _usersService;
@@ -25,7 +26,6 @@ namespace UserManager.Api.Controllers
             Console.WriteLine("logger: " + _settings.Name);
         }
 
-        // GET api/values/5
         [HttpGet("{email}")]
         public async Task<IActionResult> Get(string email)
         {

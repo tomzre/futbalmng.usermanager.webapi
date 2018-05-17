@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using UserManager.Core.Repositories;
+using System;
+using System.Text;
+using UserManager.Infrastructure.Extensions;
 using UserManager.Infrastructure.IoC;
-using UserManager.Infrastructure.IoC.Modules;
-using UserManager.Infrastructure.Mappers;
-using UserManager.Infrastructure.Repositories;
-using UserManager.Infrastructure.Services;
+using UserManager.Infrastructure.Settings;
 
 namespace UserManager.Api
 {
@@ -29,29 +21,32 @@ namespace UserManager.Api
         public IContainer ApplicationContainer { get; private set; }
         public Startup(IHostingEnvironment env)
         {
-              var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+            var builder = new ConfigurationBuilder()
+              .SetBasePath(env.ContentRootPath)
+              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+              .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+              .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication()
+            
+            var jwtSettings = Configuration.GetSettings<AuthSettings>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(cfg =>
                 {
-                   cfg.RequireHttpsMetadata = false;
-                   cfg.SaveToken = true;
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
 
-                   cfg.TokenValidationParameters = new TokenValidationParameters
-                   {
-                       ValidIssuer = Configuration["Token:issuer"],
-                       ValidAudience = Configuration["Token:issuer"],
-                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
-                   }; 
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+                    };
                 });
             services.AddMvc();
 
@@ -59,12 +54,12 @@ namespace UserManager.Api
             builder.Populate(services);
             builder.RegisterModule(new ContainerModule(Configuration));
             ApplicationContainer = builder.Build();
-
+            
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
+        public void Configure(IApplicationBuilder app,
                     IHostingEnvironment env,
                     ILoggerFactory loggerFactory,
                     IApplicationLifetime appLifetime)
@@ -76,7 +71,6 @@ namespace UserManager.Api
                 app.UseDeveloperExceptionPage();
             }
             
-            app.UseAuthentication();
             app.UseMvc();
 
             appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
