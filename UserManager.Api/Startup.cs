@@ -35,7 +35,11 @@ namespace UserManager.Api
             
             var jwtSettings = Configuration.GetSettings<AuthSettings>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options => 
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer(cfg =>
                 {
                     cfg.RequireHttpsMetadata = false;
@@ -44,10 +48,14 @@ namespace UserManager.Api
                     cfg.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidIssuer = jwtSettings.Issuer,
-                        ValidAudience = jwtSettings.Issuer,
+                        ValidateAudience = false,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
                     };
+                    
                 });
+            
+            services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
+
             services.AddMvc();
 
             var builder = new ContainerBuilder();
@@ -60,9 +68,9 @@ namespace UserManager.Api
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
-                    IHostingEnvironment env,
-                    ILoggerFactory loggerFactory,
-                    IApplicationLifetime appLifetime)
+                        IHostingEnvironment env,
+                        ILoggerFactory loggerFactory,
+                        IApplicationLifetime appLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -70,7 +78,7 @@ namespace UserManager.Api
                 loggerFactory.AddDebug();
                 app.UseDeveloperExceptionPage();
             }
-            
+            app.UseAuthentication();
             app.UseMvc();
 
             appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
