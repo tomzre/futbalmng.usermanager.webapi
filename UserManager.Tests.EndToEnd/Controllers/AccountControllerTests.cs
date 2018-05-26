@@ -22,7 +22,7 @@ namespace UserManager.Tests.EndToEnd.Controllers
             };
 
             var payload = GetPayload(command);
-            var response = await Client.PutAsync("account/password", payload);
+            var response = await Client.PutAsync("/password", payload);
             response.StatusCode.Should().BeEquivalentTo(HttpStatusCode.NoContent);
         }
     }

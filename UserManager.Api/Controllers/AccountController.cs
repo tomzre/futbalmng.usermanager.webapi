@@ -21,12 +21,12 @@ namespace UserManager.Api.Controllers
         [HttpGet("/token")]
         public IActionResult Get()
         {
-            var token = _jwtHandler.CreateToken("user1@gmail.com", "Admin");
+            var token = _jwtHandler.CreateToken("user1@gmail.com", "Adm in");
 
             return Json(token);
         }
 
-        [Authorize]
+        [Authorize(Policy = "Admin")]
         [HttpGet("/auth")]
         public IActionResult GetAuth()
         {
@@ -34,7 +34,7 @@ namespace UserManager.Api.Controllers
         }
 
         [Authorize]
-        [HttpPut("{password}")]
+        [HttpPut("/password")]
         public async Task<IActionResult> Put([FromBody]ChangeUserPassword command)
         {
             await CommandDispatcher.DispatchAsync(command);

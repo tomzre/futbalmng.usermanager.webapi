@@ -35,6 +35,8 @@ namespace UserManager.Api
             
             var jwtSettings = Configuration.GetSettings<AuthSettings>();
 
+            services.AddAuthorization(x => x.AddPolicy("Admin", p => p.RequireRole("Admin")));
+
             services.AddAuthentication(options => 
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,8 +56,6 @@ namespace UserManager.Api
                     
                 });
             
-            services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
-
             services.AddMvc();
 
             var builder = new ContainerBuilder();
