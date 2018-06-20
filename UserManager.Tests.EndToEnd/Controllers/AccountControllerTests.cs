@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
@@ -20,9 +21,15 @@ namespace UserManager.Tests.EndToEnd.Controllers
                 CurrentPassword ="secret",
                 NewPassword = "newpassword"  
             };
-
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthToken);
             var payload = GetPayload(command);
-            var response = await Client.PutAsync("/password", payload);
+
+            payload.Headers.TryAddWithoutValidation("Authorization", "Bearer " + AuthToken);
+            
+            var response = await Client.PutAsync("account/password", payload);
+
+            response.Headers.Add("Authorization", "Bearer " + AuthToken);
+            
             response.StatusCode.Should().BeEquivalentTo(HttpStatusCode.NoContent);
         }
     }

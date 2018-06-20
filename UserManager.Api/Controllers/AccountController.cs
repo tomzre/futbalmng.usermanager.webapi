@@ -18,25 +18,25 @@ namespace UserManager.Api.Controllers
             _jwtHandler = jwtHandler;
         }
 
-        [HttpGet("/token")]
+        [HttpGet("token")]
         public IActionResult Get()
         {
-            var token = _jwtHandler.CreateToken("user1@gmail.com", "Adm in");
+            var token = _jwtHandler.CreateToken("user1@gmail.com", "Admin");
 
             return Json(token);
         }
 
         [Authorize(Policy = "Admin")]
-        [HttpGet("/auth")]
+        [HttpGet("auth")]
         public IActionResult GetAuth()
         {
             return Ok();
         }
 
         [Authorize]
-        [HttpPut("/password")]
+        [HttpPut("password")]
         public async Task<IActionResult> Put([FromBody]ChangeUserPassword command)
-        {
+        {   
             await CommandDispatcher.DispatchAsync(command);
 
             return NoContent();
