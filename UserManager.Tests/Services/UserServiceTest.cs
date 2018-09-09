@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
@@ -21,7 +22,7 @@ namespace UserManager.Tests.Services
 
             var userService = new UserService(userRepositoryMock.Object, mapperMock.Object, encrypterMock.Object);
 
-            await userService.RegisterAsync("user@email.com", "user", "password");
+            await userService.RegisterAsync(Guid.NewGuid(), "user@email.com", "user", "password", "user");
 
             userRepositoryMock.Verify(x => x.AddAsync(It.IsAny<User>()), Times.Once);
         }

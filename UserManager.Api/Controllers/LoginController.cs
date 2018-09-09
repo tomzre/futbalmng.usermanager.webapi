@@ -12,12 +12,12 @@ namespace UserManager.Api.Controllers
     {
         private readonly IMemoryCache _cache;
 
-        protected LoginController(ICommandDispatcher commandDispatcher,
+        public LoginController(ICommandDispatcher commandDispatcher,
             IMemoryCache cache) : base(commandDispatcher)
         {
             _cache = cache;
         }
-
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody]Login command)
         {
             command.TokenId = Guid.NewGuid();
@@ -27,6 +27,7 @@ namespace UserManager.Api.Controllers
             var jwt = _cache.GetJwt(command.TokenId);
 
             return Json(jwt);
+            
         }
     }
 }

@@ -16,7 +16,7 @@ namespace UserManager.Infrastructure.Handlers.Users
         }
         public async Task HandleAsync(CreateUser command)
         {
-                await _usersService.RegisterAsync(command.Email, command.Username, command.Password);
+                await _usersService.RegisterAsync(command.UserId, command.Email, command.Username, command.Password, command.Role);
         }
     }
 }

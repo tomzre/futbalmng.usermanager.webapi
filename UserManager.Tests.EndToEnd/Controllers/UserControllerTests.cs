@@ -10,6 +10,7 @@ using FluentAssertions;
 using System.Net;
 using UserManager.Infrastructure.Commands.Users;
 using System.Text;
+using System;
 
 namespace UserManager.Tests.EndToEnd.Controllers
 {
@@ -18,7 +19,7 @@ namespace UserManager.Tests.EndToEnd.Controllers
         [Test]
         public async Task given_valid_email_user_should_exist()
         {
-            var email = "user1@email.com";
+            var email = "user1@test.com";
             var response = await Client.GetAsync($"users/{email}");
             response.EnsureSuccessStatusCode();
 
@@ -32,6 +33,7 @@ namespace UserManager.Tests.EndToEnd.Controllers
         [Test]
         public async Task given_invalid_email_user_should_throw_not_found_code()
         {
+            
             var email = "user1000000@email.com";
             var response = await Client.GetAsync($"users/{email}");
             response.StatusCode.Should().BeEquivalentTo(HttpStatusCode.NotFound);
@@ -41,10 +43,12 @@ namespace UserManager.Tests.EndToEnd.Controllers
         public async Task given_unique_email_user_should_be_created()
         {
             var command = new CreateUser
-            { 
+            {
+                UserId = Guid.NewGuid(),
                 Email = "test@email.com",
                 Username = "testuser",
-                Password = "secret"    
+                Password = "secret",
+                Role = "user"
             };
 
             var payload = GetPayload(command);
@@ -59,10 +63,12 @@ namespace UserManager.Tests.EndToEnd.Controllers
         public async Task given_existing_email_user_should_not_be_created()
         {
             var command = new CreateUser
-            { 
-                Email = "user1@email.com",
+            {
+                UserId = Guid.NewGuid(),
+                Email = "user1@test.com",
                 Username = "testuser",
-                Password = "secret"    
+                Password = "secret",
+                Role = "user"
             };
 
             var payload = GetPayload(command);

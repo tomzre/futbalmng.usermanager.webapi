@@ -12,7 +12,7 @@ namespace UserManager.Tests.UserTests
         [SetUp]
         public void Setup()
         {
-            User = new User("palmask8@gmail.com", "username", "haslo", "sol", "Admin");
+            User = new User(Guid.NewGuid(), "palmask8@gmail.com", "username", "haslo", "sol", "Admin");
         }
 
         [Test]

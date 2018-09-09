@@ -11,6 +11,7 @@ using System;
 using System.Text;
 using UserManager.Infrastructure.Extensions;
 using UserManager.Infrastructure.IoC;
+using UserManager.Infrastructure.Services;
 using UserManager.Infrastructure.Settings;
 
 namespace UserManager.Api
@@ -79,6 +80,14 @@ namespace UserManager.Api
                 app.UseDeveloperExceptionPage();
             }
             app.UseAuthentication();
+
+            var generalSettings = app.ApplicationServices.GetService<GeneralSettings>();
+            if(generalSettings.SeedData)
+            {
+                var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+                dataInitializer.SeedAsync();
+            }
+
             app.UseMvc();
 
             appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());

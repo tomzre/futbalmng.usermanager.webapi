@@ -23,7 +23,6 @@ namespace UserManager.Api.Controllers
         {
             _usersService = userService;
             _settings = settings;
-            Console.WriteLine("logger: " + _settings.Name);
         }
 
         [HttpGet("{email}")]

@@ -45,7 +45,7 @@ namespace UserManager.Infrastructure.Services
             throw new Exception("Invalid credentials.");
         }
 
-        public async Task RegisterAsync(string email, string username, string password)
+        public async Task RegisterAsync(Guid userId, string email, string username, string password, string role)
         {
             var user = await _userRepository.GetAsync(email);
             
@@ -57,7 +57,7 @@ namespace UserManager.Infrastructure.Services
             var salt = _encrypter.GetSalt(password);
             var hash = _encrypter.GetHash(password, salt);
 
-            user = new User(email, username, hash, salt, "User");
+            user = new User(userId, email, username, hash, salt, role);
 
             await _userRepository.AddAsync(user);
         }
