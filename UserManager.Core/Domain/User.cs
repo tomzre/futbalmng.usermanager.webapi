@@ -24,10 +24,11 @@ namespace UserManager.Core.Domain
         {
         }
 
-        public User(string email, string username, 
+        public User(Guid userId, 
+            string email, string username, 
             string password, string salt, string role)
         {
-            Id = Guid.NewGuid();
+            Id = userId;
             SetUsername(username);
             SetPassword(password, salt);
             SetEmail(email);
