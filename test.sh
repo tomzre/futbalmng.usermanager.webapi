@@ -7,4 +7,4 @@ do
  echo -e ${WHT}Running tests for:${LGRN} $project ${NC}
  dotnet test $project/$project.csproj
 done
-read
+
