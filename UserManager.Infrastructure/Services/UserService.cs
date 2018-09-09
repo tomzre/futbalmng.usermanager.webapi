@@ -36,8 +36,8 @@ namespace UserManager.Infrastructure.Services
                 throw new Exception($"User with email: '{email}' does not exists.");
             }
 
-            var salt = _encrypter.GetSalt(password);
-            var hash = _encrypter.GetHash(password, salt);
+            // var salt = _encrypter.GetSalt(password);
+            var hash = _encrypter.GetHash(password, user.Salt);
 
             if(user.Password == hash){
                 return;

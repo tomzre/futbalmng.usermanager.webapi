@@ -18,14 +18,6 @@ namespace UserManager.Api.Controllers
             _jwtHandler = jwtHandler;
         }
 
-        [HttpGet("token")]
-        public IActionResult Get()
-        {
-            var token = _jwtHandler.CreateToken("user1@gmail.com", "Admin");
-
-            return Json(token);
-        }
-
         [Authorize(Policy = "Admin")]
         [HttpGet("auth")]
         public IActionResult GetAuth()

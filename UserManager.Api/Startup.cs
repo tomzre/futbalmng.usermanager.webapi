@@ -23,8 +23,8 @@ namespace UserManager.Api
         {
             var builder = new ConfigurationBuilder()
               .SetBasePath(env.ContentRootPath)
-              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-              .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+              .AddJsonFile("./appsettings.json", optional: false, reloadOnChange: true)
+              .AddJsonFile($"./appsettings.{env.EnvironmentName}.json", optional: false)
               .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -36,7 +36,7 @@ namespace UserManager.Api
             var jwtSettings = Configuration.GetSettings<AuthSettings>();
 
             services.AddAuthorization(x => x.AddPolicy("Admin", p => p.RequireRole("Admin")));
-
+            services.AddMemoryCache();
             services.AddAuthentication(options => 
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
