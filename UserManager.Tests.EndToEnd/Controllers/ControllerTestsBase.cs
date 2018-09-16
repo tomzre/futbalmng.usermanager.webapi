@@ -30,7 +30,7 @@ namespace UserManager.Tests.EndToEnd.Controllers
         }
 
         private static string AuthorizationToken(){
-            return @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImp0aSI6IjhmYTE1MTI3LWRhYjEtNDc5MS1iODllLTAwMjU5ZmRkOTMwYiIsImlhdCI6MTUyOTEyNzQwNCwibmJmIjoxNTI5MTI3NDA0LCJleHAiOjIxMjkxMjczNDQsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIyNDkifQ.X-z5ZKxyDNmNdghrJ7E0j1qKKRP-kOEKNzM0M5ev51A";
+            return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWFhMTcxMS1hZDQ0LTQ1ZjYtYjYxYy0wNTNhYTg2YTk0YWUiLCJ1bmlxdWVfbmFtZSI6ImFhYWExNzExLWFkNDQtNDVmNi1iNjFjLTA1M2FhODZhOTRhZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiNDY2YmM3ZTgtN2QwYS00Mzg5LTk3MTktOTBjMGNhOGI2YjhiIiwiaWF0IjoxNTM3MDk5MzA4LCJuYmYiOjE1MzcwOTkzMDgsImV4cCI6MTU5NzA5OTI0OCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MjI0OSJ9.F9ue06jq2Caa_2XZfTYzgSAirPMIoKbiKM7guUFlLUE";
         }
     }
 }

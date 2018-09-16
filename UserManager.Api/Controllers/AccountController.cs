@@ -28,8 +28,8 @@ namespace UserManager.Api.Controllers
         [Authorize]
         [HttpPut("password")]
         public async Task<IActionResult> Put([FromBody]ChangeUserPassword command)
-        {   
-            await CommandDispatcher.DispatchAsync(command);
+        { 
+            await DispatchAsync(command);
 
             return NoContent();
         }

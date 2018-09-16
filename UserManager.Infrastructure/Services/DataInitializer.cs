@@ -31,7 +31,7 @@ namespace UserManager.Infrastructure.Services
             {
                 var userId = Guid.NewGuid();
                 var userName = $"admin{i}";
-                tasks.Add(_userService.RegisterAsync(userId, $"{userName}@test.com", userName, "password", "admin"));
+                tasks.Add(_userService.RegisterAsync(userId, $"{userName}@test.com", userName, "password", "Admin"));
             }
             await Task.WhenAll(tasks);
             _logger.LogTrace("Data has been initiliazed.");

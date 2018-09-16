@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using UserManager.Core.Domain;
 using UserManager.Core.Repositories;
 using UserManager.Infrastructure.DTO;
+using UserManager.Infrastructure.Extensions;
 
 namespace UserManager.Infrastructure.Services
 {
@@ -22,21 +25,22 @@ namespace UserManager.Infrastructure.Services
 
         public async Task<UserDto> GetAsync(string email)
         {
-            var user = await _userRepository.GetAsync(email);
+            var user = await _userRepository.GetOrFailAsync(email);
 
-            return _mapper.Map<User, UserDto>(user);
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<IEnumerable<UserDto>> BrowseAsync()
+        {
+            var users = await _userRepository.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
         public async Task LoginAsync(string email, string password)
         {
-            var user = await _userRepository.GetAsync(email);
+            var user = await _userRepository.GetOrFailAsync(email);
             
-            if(user == null)
-            {
-                throw new Exception($"User with email: '{email}' does not exists.");
-            }
-
-            // var salt = _encrypter.GetSalt(password);
             var hash = _encrypter.GetHash(password, user.Salt);
 
             if(user.Password == hash){

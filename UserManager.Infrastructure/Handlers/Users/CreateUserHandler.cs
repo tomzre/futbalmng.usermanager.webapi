@@ -16,6 +16,7 @@ namespace UserManager.Infrastructure.Handlers.Users
         }
         public async Task HandleAsync(CreateUser command)
         {
+                command.UserId = Guid.NewGuid();
                 await _usersService.RegisterAsync(command.UserId, command.Email, command.Username, command.Password, command.Role);
         }
     }

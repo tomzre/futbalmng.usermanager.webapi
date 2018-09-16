@@ -11,7 +11,6 @@ using UserManager.Infrastructure.Settings;
 
 namespace UserManager.Api.Controllers
 {
-    [Route("[controller]")]
     public class UsersController : ApiControllerBase
     {
         private readonly IUserService _usersService;
@@ -28,13 +27,16 @@ namespace UserManager.Api.Controllers
         [HttpGet("{email}")]
         public async Task<IActionResult> Get(string email)
         {
-               var user = await _usersService.GetAsync(email);
-               if(user != null)
-               {
-                    return Ok(user);
-               }
+            try
+            {
+                var user = await _usersService.GetAsync(email);
+                return Ok(user);
+            }
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
                
-                return NotFound($"User with {email} not exists.");
         }
 
         // POST api/values
@@ -42,9 +44,9 @@ namespace UserManager.Api.Controllers
         public async Task<IActionResult> Post([FromBody]CreateUser command)
         {
             try{
-                await CommandDispatcher.DispatchAsync(command);     
+                await DispatchAsync(command);     
                 
-                return Created($"users/{command.Email}", new object());
+                return Created($"users/{command.Email}", null);
 
             }catch(Exception ex){
                 return BadRequest(ex.Message);
@@ -52,9 +54,12 @@ namespace UserManager.Api.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpGet]
+        public async Task<IActionResult> BrowseAsync()
         {
+            var users = await _usersService.BrowseAsync();
+
+            return Json(users);
         }
         
         // DELETE api/values/5

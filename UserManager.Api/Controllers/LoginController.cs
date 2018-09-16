@@ -22,7 +22,7 @@ namespace UserManager.Api.Controllers
         {
             command.TokenId = Guid.NewGuid();
 
-            await CommandDispatcher.DispatchAsync(command);
+            await DispatchAsync(command);
 
             var jwt = _cache.GetJwt(command.TokenId);
 

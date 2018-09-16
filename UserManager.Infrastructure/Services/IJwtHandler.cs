@@ -5,6 +5,6 @@ namespace UserManager.Infrastructure.Services
 {
     public interface IJwtHandler
     {
-        JwtDto CreateToken(string email, string role);
+        JwtDto CreateToken(Guid userId, string role);
     }
 }
