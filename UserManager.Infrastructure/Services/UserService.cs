@@ -6,6 +6,7 @@ using AutoMapper;
 using UserManager.Core.Domain;
 using UserManager.Core.Repositories;
 using UserManager.Infrastructure.DTO;
+using UserManager.Infrastructure.Extensions;
 
 namespace UserManager.Infrastructure.Services
 {
@@ -24,7 +25,7 @@ namespace UserManager.Infrastructure.Services
 
         public async Task<UserDto> GetAsync(string email)
         {
-            var user = await _userRepository.GetAsync(email);
+            var user = await _userRepository.GetOrFailAsync(email);
 
             return _mapper.Map<UserDto>(user);
         }
@@ -38,13 +39,8 @@ namespace UserManager.Infrastructure.Services
 
         public async Task LoginAsync(string email, string password)
         {
-            var user = await _userRepository.GetAsync(email);
+            var user = await _userRepository.GetOrFailAsync(email);
             
-            if(user == null)
-            {
-                throw new Exception($"User with email: '{email}' does not exists.");
-            }
-
             var hash = _encrypter.GetHash(password, user.Salt);
 
             if(user.Password == hash){

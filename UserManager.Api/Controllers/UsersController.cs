@@ -27,13 +27,16 @@ namespace UserManager.Api.Controllers
         [HttpGet("{email}")]
         public async Task<IActionResult> Get(string email)
         {
-               var user = await _usersService.GetAsync(email);
-               if(user != null)
-               {
-                    return Ok(user);
-               }
+            try
+            {
+                var user = await _usersService.GetAsync(email);
+                return Ok(user);
+            }
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
                
-                return NotFound($"User with {email} not exists.");
         }
 
         // POST api/values
