@@ -1,0 +1,13 @@
+{
+    "editor.tokenColorCustomizations": {
+        "[Visual Studio Dark]": {
+            "functions": "#c57db9",
+            "types": "#b3b3b3",
+            "variables": "#6fd1ff",
+            "keywords": "#aac9d3",
+            "textMateRules": [
+                
+            ]
+        }
+    }
+}
