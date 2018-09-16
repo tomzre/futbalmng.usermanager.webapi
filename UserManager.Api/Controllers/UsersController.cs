@@ -52,9 +52,12 @@ namespace UserManager.Api.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpGet]
+        public async Task<IActionResult> BrowseAsync()
         {
+            var users = await _usersService.BrowseAsync();
+
+            return Json(users);
         }
         
         // DELETE api/values/5
