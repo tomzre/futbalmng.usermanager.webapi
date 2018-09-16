@@ -11,7 +11,6 @@ using UserManager.Infrastructure.Settings;
 
 namespace UserManager.Api.Controllers
 {
-    [Route("[controller]")]
     public class UsersController : ApiControllerBase
     {
         private readonly IUserService _usersService;
@@ -42,9 +41,9 @@ namespace UserManager.Api.Controllers
         public async Task<IActionResult> Post([FromBody]CreateUser command)
         {
             try{
-                await CommandDispatcher.DispatchAsync(command);     
+                await DispatchAsync(command);     
                 
-                return Created($"users/{command.Email}", new object());
+                return Created($"users/{command.Email}", null);
 
             }catch(Exception ex){
                 return BadRequest(ex.Message);
