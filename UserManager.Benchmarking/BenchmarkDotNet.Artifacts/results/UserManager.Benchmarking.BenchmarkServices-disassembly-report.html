@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>DisassemblyDiagnoser Output UserManager.Benchmarking.BenchmarkServices</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<table>
+<thead>
+<tr><th colspan="2">UserManager.Benchmarking.BenchmarkServices</th></tr>
+<tr>
+<th>GettingHash .NET Core 2.1.5 (CoreCLR 4.6.26919.02, CoreFX 4.6.26919.02), 64bit RyuJIT</th>
+<th>GettingSalt .NET Core 2.1.5 (CoreCLR 4.6.26919.02, CoreFX 4.6.26919.02), 64bit RyuJIT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="vertical-align:top;"><pre><code>
+00007ffd`b1af2a60 UserManager.Benchmarking.BenchmarkServices.GettingHash()
+00007ffd`b1af2a60 488b4908        mov     rcx,qword ptr [rcx+8]
+00007ffd`b1af2a64 48baf89588ce21020000 mov rdx,221CE8895F8h
+00007ffd`b1af2a6e 488b12          mov     rdx,qword ptr [rdx]
+00007ffd`b1af2a71 49b8009688ce21020000 mov r8,221CE889600h
+00007ffd`b1af2a7b 4d8b00          mov     r8,qword ptr [r8]
+00007ffd`b1af2a7e 48b8e881adb1fd7f0000 mov rax,7FFDB1AD81E8h
+00007ffd`b1af2a88 3909            cmp     dword ptr [rcx],ecx
+00007ffd`b1af2a8a 48ffe0          jmp     rax
+00007ffd`b1af2a8d 0000            add     byte ptr [rax],al
+00007ffd`b1af2a8f 0019            add     byte ptr [rcx],bl
+00007ffd`b1af2a91 0000            add     byte ptr [rax],al
+00007ffd`b1af2a93 004000          add     byte ptr [rax],al
+00007ffd`b1af2a96 0000            add     byte ptr [rax],al
+00007ffd`b1af2a98 a0b6c3b1fd7f000041 mov   al,byte ptr [4100007FFDB1C3B6h]
+00007ffd`b1af2aa1 56              push    rsi
+00007ffd`b1af2aa2 57              push    rdi
+00007ffd`b1af2aa3 56              push    rsi
+00007ffd`b1af2aa4 55              push    rbp
+00007ffd`b1af2aa5 53              push    rbx
+00007ffd`b1af2aa6 4883ec30        sub     rsp,30h
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffd`b1b02a60 UserManager.Benchmarking.BenchmarkServices.GettingSalt()
+00007ffd`b1b02a60 488b4908        mov     rcx,qword ptr [rcx+8]
+00007ffd`b1b02a64 48baf8954f6d09020000 mov rdx,2096D4F95F8h
+00007ffd`b1b02a6e 488b12          mov     rdx,qword ptr [rdx]
+00007ffd`b1b02a71 48b8f081aeb1fd7f0000 mov rax,7FFDB1AE81F0h
+00007ffd`b1b02a7b 3909            cmp     dword ptr [rcx],ecx
+00007ffd`b1b02a7d 48ffe0          jmp     rax
+00007ffd`b1b02a80 1900            sbb     dword ptr [rax],eax
+00007ffd`b1b02a82 0000            add     byte ptr [rax],al
+00007ffd`b1b02a84 400000          add     byte ptr [rax],al
+00007ffd`b1b02a87 0000            add     byte ptr [rax],al
+00007ffd`b1b02a89 9f              lahf
+00007ffd`b1b02a8a c4              ???
+00007ffd`b1b02a8b b1fd            mov     cl,0FDh
+00007ffd`b1b02a8d 7f00            jg      00007ffd`b1b02a8f
+00007ffd`b1b02a8f 005756          add     byte ptr [rdi+56h],dl
+00007ffd`b1b02a92 4883ec28        sub     rsp,28h
+00007ffd`b1b02a96 488bca          mov     rcx,rdx
+00007ffd`b1b02a99 e8b25c2e5f      call    System_Private_CoreLib+0x608750 (00007ffe`10de8750)
+
+00007ffe`10de8750 System.String.IsNullOrWhiteSpace(System.String)
+IL_0000: ldarg.0
+IL_0001: brtrue.s IL_0005
+00007ffe`10de875a 4885f6          test    rsi,rsi
+00007ffe`10de875d 750d            jne     System_Private_CoreLib+0x60876c (00007ffe`10de876c)
+IL_0003: ldc.i4.1
+IL_0004: ret
+00007ffe`10de875f b801000000      mov     eax,1
+00007ffe`10de8764 4883c420        add     rsp,20h
+00007ffe`10de8768 5b              pop     rbx
+00007ffe`10de8769 5e              pop     rsi
+00007ffe`10de876a 5f              pop     rdi
+00007ffe`10de876b c3              ret
+IL_0005: ldc.i4.0
+IL_0006: stloc.0
+IL_0007: br.s IL_001d
+00007ffe`10de876c 33ff            xor     edi,edi
+IL_001d: ldloc.0
+IL_001e: ldarg.0
+IL_001f: callvirt System.Int32 System.String::get_Length()
+IL_0024: blt.s IL_0009
+00007ffe`10de876e 8b5e08          mov     ebx,dword ptr [rsi+8]
+00007ffe`10de8771 85db            test    ebx,ebx
+00007ffe`10de8773 7e5c            jle     System_Private_CoreLib+0x6087d1 (00007ffe`10de87d1)
+IL_0009: ldarg.0
+IL_000a: ldloc.0
+IL_000b: callvirt System.Char System.String::get_Chars(System.Int32)
+IL_0010: call System.Boolean System.Char::IsWhiteSpace(System.Char)
+IL_0015: brtrue.s IL_0019
+00007ffe`10de8775 4863cf          movsxd  rcx,edi
+00007ffe`10de8778 0fb74c4e0c      movzx   ecx,word ptr [rsi+rcx*2+0Ch]
+00007ffe`10de877d 81f9ff000000    cmp     ecx,0FFh
+00007ffe`10de8783 7f2a            jg      System_Private_CoreLib+0x6087af (00007ffe`10de87af)
+00007ffe`10de8785 83f920          cmp     ecx,20h
+00007ffe`10de8788 741e            je      System_Private_CoreLib+0x6087a8 (00007ffe`10de87a8)
+00007ffe`10de878a 8d51f7          lea     edx,[rcx-9]
+00007ffe`10de878d 83fa04          cmp     edx,4
+00007ffe`10de8790 7616            jbe     System_Private_CoreLib+0x6087a8 (00007ffe`10de87a8)
+00007ffe`10de8792 81f9a0000000    cmp     ecx,0A0h
+00007ffe`10de8798 740e            je      System_Private_CoreLib+0x6087a8 (00007ffe`10de87a8)
+00007ffe`10de879a 81f985000000    cmp     ecx,85h
+00007ffe`10de87a0 0f94c1          sete    cl
+00007ffe`10de87a3 0fb6c9          movzx   ecx,cl
+00007ffe`10de87a6 eb05            jmp     System_Private_CoreLib+0x6087ad (00007ffe`10de87ad)
+00007ffe`10de87a8 b901000000      mov     ecx,1
+00007ffe`10de87ad eb18            jmp     System_Private_CoreLib+0x6087c7 (00007ffe`10de87c7)
+00007ffe`10de87af 33d2            xor     edx,edx
+00007ffe`10de87b1 e8aa000100      call    System_Private_CoreLib+0x618860 (00007ffe`10df8860)
+00007ffe`10de87b6 83c0f5          add     eax,0FFFFFFF5h
+00007ffe`10de87b9 83f802          cmp     eax,2
+00007ffe`10de87bc 7707            ja      System_Private_CoreLib+0x6087c5 (00007ffe`10de87c5)
+00007ffe`10de87be b901000000      mov     ecx,1
+00007ffe`10de87c3 eb02            jmp     System_Private_CoreLib+0x6087c7 (00007ffe`10de87c7)
+00007ffe`10de87c5 33c9            xor     ecx,ecx
+00007ffe`10de87c7 85c9            test    ecx,ecx
+00007ffe`10de87c9 7413            je      System_Private_CoreLib+0x6087de (00007ffe`10de87de)
+IL_0019: ldloc.0
+IL_001a: ldc.i4.1
+IL_001b: add
+IL_001c: stloc.0
+00007ffe`10de87cb ffc7            inc     edi
+00007ffe`10de87cd 3bdf            cmp     ebx,edi
+00007ffe`10de87cf 7fa4            jg      System_Private_CoreLib+0x608775 (00007ffe`10de8775)
+IL_0026: ldc.i4.1
+IL_0027: ret
+00007ffe`10de87d1 b801000000      mov     eax,1
+00007ffe`10de87d6 4883c420        add     rsp,20h
+00007ffe`10de87da 5b              pop     rbx
+00007ffe`10de87db 5e              pop     rsi
+00007ffe`10de87dc 5f              pop     rdi
+00007ffe`10de87dd c3              ret
+IL_0017: ldc.i4.0
+IL_0018: ret
+00007ffe`10de87de 33c0            xor     eax,eax
+
+</code></pre></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
