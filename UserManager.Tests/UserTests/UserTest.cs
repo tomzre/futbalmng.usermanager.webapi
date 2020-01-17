@@ -1,8 +1,8 @@
-using System;
-using NUnit.Framework;
-using UserManager.Core.Domain;
 using FluentAssertions;
-using NUnit.Framework.Constraints;
+using NUnit.Framework;
+using System;
+using UserManager.Core.Domain;
+using UserManager.Core.Domain.Exceptions;
 
 namespace UserManager.Tests.UserTests
 {
@@ -18,7 +18,7 @@ namespace UserManager.Tests.UserTests
         [Test]
         public void user_name_should_be_valid()
         {
-           User.Username.Should().Be("username");
+            User.Username.Should().Be("username");
         }
 
         [Test]
@@ -35,7 +35,8 @@ namespace UserManager.Tests.UserTests
                 .WithMessage("Invalid username.");
         }
         [Test]
-        public void setting_wrong_email_should_throw_exception(){
+        public void setting_wrong_email_should_throw_exception()
+        {
             // Arrange
             string wrongPassword = "dupadupa";
 
@@ -43,7 +44,7 @@ namespace UserManager.Tests.UserTests
             Action act = () => User.SetEmail(wrongPassword);
 
             // Assert
-            act.Should().Throw<FormatException>()
+            act.Should().Throw<DomainException>()
                 .WithMessage("Invalid email.");
         }
 

@@ -8,8 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using NLog.Extensions.Logging;
 using System;
 using System.Text;
+using UserManager.Api.Framework;
 using UserManager.Infrastructure.Extensions;
 using UserManager.Infrastructure.IoC;
 using UserManager.Infrastructure.Services;
@@ -34,12 +36,12 @@ namespace UserManager.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            
+
             var jwtSettings = Configuration.GetSettings<AuthSettings>();
 
             services.AddAuthorization(x => x.AddPolicy("Admin", p => p.RequireRole("Admin")));
             services.AddMemoryCache();
-            services.AddAuthentication(options => 
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,7 +58,7 @@ namespace UserManager.Api
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
                     };
                 });
-            
+
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented);
 
@@ -64,7 +66,7 @@ namespace UserManager.Api
             builder.Populate(services);
             builder.RegisterModule(new ContainerModule(Configuration));
             ApplicationContainer = builder.Build();
-            
+
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
@@ -76,18 +78,23 @@ namespace UserManager.Api
         {
             if (env.IsDevelopment())
             {
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-                loggerFactory.AddDebug();
+                //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+                //loggerFactory.AddDebug();
                 app.UseDeveloperExceptionPage();
             }
+
+            loggerFactory.AddNLog();
+
             app.UseAuthentication();
 
             var generalSettings = app.ApplicationServices.GetService<GeneralSettings>();
-            if(generalSettings.SeedData)
+            if (generalSettings.SeedData)
             {
                 var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
                 dataInitializer.SeedAsync();
             }
+
+            app.UseCustomExceptionHandler();
 
             app.UseMvc();
 

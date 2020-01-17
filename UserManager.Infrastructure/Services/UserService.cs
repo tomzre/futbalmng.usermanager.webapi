@@ -1,11 +1,11 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using UserManager.Core.Domain;
 using UserManager.Core.Repositories;
 using UserManager.Infrastructure.DTO;
+using UserManager.Infrastructure.Exceptions;
 using UserManager.Infrastructure.Extensions;
 
 namespace UserManager.Infrastructure.Services
@@ -40,22 +40,28 @@ namespace UserManager.Infrastructure.Services
         public async Task LoginAsync(string email, string password)
         {
             var user = await _userRepository.GetOrFailAsync(email);
-            
+
+            if (user == null)
+            {
+                throw new ServiceException(ErrorCodes.InvalidCredentials, "Invalid credentials.");
+            }
+
             var hash = _encrypter.GetHash(password, user.Salt);
 
-            if(user.Password == hash){
+            if (user.Password == hash)
+            {
                 return;
             }
-            throw new Exception("Invalid credentials.");
+            throw new ServiceException(ErrorCodes.InvalidCredentials, "Invalid credentials.");
         }
 
         public async Task RegisterAsync(Guid userId, string email, string username, string password, string role)
         {
             var user = await _userRepository.GetAsync(email);
-            
-            if(user != null)
+
+            if (user != null)
             {
-                throw new Exception($"User with email: '{email}' already exists.");
+                throw new ServiceException(ErrorCodes.EmailInUse, $"User with email: '{email}' already exists.");
             }
 
             var salt = _encrypter.GetSalt(password);
